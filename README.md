@@ -25,33 +25,33 @@ Puedes instalar ANTLR siguiendo las instrucciones de la [página oficial](https:
 
 #### bash
 ##### Descargar ANTLR jar
-'curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar'
+`curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar`
 
 ##### Mover el archivo a un directorio específico, por ejemplo, /usr/local/lib/
-'sudo mv antlr-4.9.2-complete.jar /usr/local/lib/'
+`sudo mv antlr-4.9.2-complete.jar /usr/local/lib/`
 
 ##### Configurar el alias en tu archivo de configuración de shell (por ejemplo, .bashrc o .zshrc)
-'echo 'alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'' >> ~/.bashrc'
-'echo 'alias grun='java org.antlr.v4.gui.TestRig'' >> ~/.bashrc'
+`echo 'alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'' >> ~/.bashrc`
+`echo 'alias grun='java org.antlr.v4.gui.TestRig'' >> ~/.bashrc`
 
 ##### Aplicar los cambios
-'source ~/.bashrc'
+`source ~/.bashrc`
 
 ##### Descargar ANTLR para python
-'pip install antlr4-python3-runtime'
+`pip install antlr4-python3-runtime`
 
 ### 2. Clonar el repositorio
 
 #### bash
-'git clone <URL_del_repositorio>'
-'cd nombre_del_proyecto'
+`git clone <URL_del_repositorio>`
+`cd nombre_del_proyecto`
 
 
 ### 3. Ejecutar (Python)
 
 #### bash
 ##### Ejecutar el analizador
-'python lexer.py input.json'
+`python lexer.py input.json`
 
 
 
@@ -60,7 +60,7 @@ Puedes instalar ANTLR siguiendo las instrucciones de la [página oficial](https:
 Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para discutir cualquier cambio que te gustaría realizar.
 
 # Redes de los contribuidores
-https://github.com/AugustoDor
-https://github.com/JuanMarighetti
-https://github.com/LukitaPeola
-https://github.com/IvooBSJ
+- https://github.com/AugustoDor
+- https://github.com/JuanMarighetti
+- https://github.com/LukitaPeola
+- https://github.com/IvooBSJ
