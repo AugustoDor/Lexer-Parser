@@ -5,8 +5,8 @@ En este caso, trabajaremos con una gramatica para archivos .json especificos. La
 
 En el archivo **input.json** se encuentra un ejemplo que es aceptado por la gramática.
 
-## Aclaracion
-En esta primera etapa 30/05/2024 solo se proporciona el analizador láxico, proximamente se realizará el analizador sintáctico.
+## Aclaración
+En esta primera etapa 30/05/2024 solo se proporciona el analizador léxico, proximamente se realizará el analizador sintáctico.
 
 
 ## Requisitos
@@ -32,6 +32,7 @@ Puedes instalar ANTLR siguiendo las instrucciones de la [página oficial](https:
 
 ##### Configurar el alias en tu archivo de configuración de shell (por ejemplo, .bashrc o .zshrc)
 `echo 'alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'' >> ~/.bashrc`
+
 `echo 'alias grun='java org.antlr.v4.gui.TestRig'' >> ~/.bashrc`
 
 ##### Aplicar los cambios
@@ -40,10 +41,12 @@ Puedes instalar ANTLR siguiendo las instrucciones de la [página oficial](https:
 ##### Descargar ANTLR para python
 `pip install antlr4-python3-runtime`
 
+
 ### 2. Clonar el repositorio
 
 #### bash
 `git clone <URL_del_repositorio>`
+
 `cd nombre_del_proyecto`
 
 
