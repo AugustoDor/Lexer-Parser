@@ -3,39 +3,7 @@
 Este proyecto demuestra cómo usar ANTLR para crear un lexer y un parser. ANTLR es una poderosa herramienta para trabajar con lenguajes y genera analizadores léxicos y sintácticos a partir de gramáticas definidas en archivos `.g4`.
 En este caso, trabajaremos con una gramatica para archivos .json especificos. La estructura de los documentos aceptados son las siguientes:
 
-{
-"empresas": [
-{
-"nombre_empresa": "Mc Donalds",
-"fundación": 2005,
-"dirección": null,
-"ingresos_anuales": 200000.25,
-"pyme": false,
-"departamentos": [
-{
-"nombre": "Ventas",
-"subdepartamentos": [
-{
-"nombre": "Mc Donalds JUC",
-"empleados": [
-{
-"nombre": "Sideshow Mel",
-"cargo": "Product Analyst",
-"salario": 1250.65,
-"activo": true,
-"fecha_contratación": "2023-09-10",
-"proyectos": [
-{
-"nombre": "Mc Flurry",
-"fecha_inicio": "2022-01-10",
-"fecha_fin": null
-} ]
-} ]
-} ]
-} ]
-}
-]
-}
+En el archivo **input.json** se encuentra un ejemplo que es aceptado por la gramática.
 
 ## Aclaracion
 En esta primera etapa 30/05/2024 solo se proporciona el analizador láxico, proximamente se realizará el analizador sintáctico.
@@ -56,43 +24,40 @@ Antes de comenzar, asegúrate de tener los siguientes requisitos instalados:
 Puedes instalar ANTLR siguiendo las instrucciones de la [página oficial](https://www.antlr.org/download.html). Aquí tienes un ejemplo de cómo instalarlo en un sistema Unix:
 
 #### bash
-# Descargar ANTLR jar
-curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
+##### Descargar ANTLR jar
+'curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar'
 
-# Mover el archivo a un directorio específico, por ejemplo, /usr/local/lib/
-sudo mv antlr-4.9.2-complete.jar /usr/local/lib/
+##### Mover el archivo a un directorio específico, por ejemplo, /usr/local/lib/
+'sudo mv antlr-4.9.2-complete.jar /usr/local/lib/'
 
-# Configurar el alias en tu archivo de configuración de shell (por ejemplo, .bashrc o .zshrc)
-echo 'alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'' >> ~/.bashrc
-echo 'alias grun='java org.antlr.v4.gui.TestRig'' >> ~/.bashrc
+##### Configurar el alias en tu archivo de configuración de shell (por ejemplo, .bashrc o .zshrc)
+'echo 'alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'' >> ~/.bashrc'
+'echo 'alias grun='java org.antlr.v4.gui.TestRig'' >> ~/.bashrc'
 
-# Aplicar los cambios
-source ~/.bashrc
+##### Aplicar los cambios
+'source ~/.bashrc'
 
-# Descargar ANTLR para python
-pip install antlr4-python3-runtime
+##### Descargar ANTLR para python
+'pip install antlr4-python3-runtime'
 
 ### 2. Clonar el repositorio
 
 #### bash
-git clone <URL_del_repositorio>
-cd nombre_del_proyecto
+'git clone <URL_del_repositorio>'
+'cd nombre_del_proyecto'
 
 
 ### 3. Ejecutar (Python)
 
 #### bash
-# Ejecutar el analizador
-python lexer.py input.json
+##### Ejecutar el analizador
+'python lexer.py input.json'
 
 
 
 
 # Contribuciones
 Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para discutir cualquier cambio que te gustaría realizar.
-
-# Licencia
-Este proyecto está licenciado.
 
 # Redes de los contribuidores
 https://github.com/AugustoDor
