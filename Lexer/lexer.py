@@ -1,6 +1,6 @@
 import sys
 from antlr4 import *
-from reglaslexer import reglaslexer
+from Lexer.reglaslexer import reglaslexer
 
 def main():
     # Leer entrada desde un archivo o stdin
