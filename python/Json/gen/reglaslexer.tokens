@@ -1,0 +1,10 @@
+TRUE=1
+FALSE=2
+INT=3
+FLOAT=4
+DATE=5
+STRING=6
+URL=7
+WS=8
+'true'=1
+'false'=2
