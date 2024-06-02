@@ -46,6 +46,7 @@ PUERTO=45
 RUTA=46
 URL=47
 WS=48
+ERROR=49
 '"empresas":'=1
 '"versión":'=2
 '"firma_digital":'=3

@@ -12,6 +12,9 @@ def main():
             token_stream.fill()
             for token in token_stream.tokens:
                 token_name = GramáticaLexer.symbolicNames[token.type]
+                if token_name == 'ERROR':  # Asegúrate de que 'ERROR' sea el nombre del token que indica un error
+                    print(f"Error: Token no reconocido '{token.text}' en la posición {token.start}")
+                    break
                 print(f'Token: {token.text} Name: {token_name}')
     except FileNotFoundError:
         print(f"File '{file_name}' not found.")
