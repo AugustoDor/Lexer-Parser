@@ -102,3 +102,6 @@ RUTA: URL_STRING;
 URL: PROTOCOLO '://' DOMINIO (':' PUERTO)? ('/' RUTA)*;
 WS: [ \t\r\n]+ -> skip;
 fragment ESC: '\\' [\\/bfnrt];
+
+// Regla para capturar errores
+ERROR: . -> channel(HIDDEN);
