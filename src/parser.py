@@ -65,7 +65,8 @@ class JSONToHTMLListener(GramáticaListener):
         pass
 
     def enterT_link(self, ctx):
-        self.html += f'<p>Link: <a href="{ctx.LINK().getText()}">{ctx.STRING().getText()}</a></p>'
+        url = ctx.URL().getText().strip('"')
+        self.html += f'<p>Link: <a href="{url}">{url}</a></p>'
 
     def exitT_link(self, ctx):
         pass

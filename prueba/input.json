@@ -2,11 +2,11 @@
   "empresas": [
     {
       "nombre_empresa": "Mc Donalds",
-      "funación": 2005,
+      "fundación": 2005,
       "dirección": null,
       "ingresos_anuales": 200000.25,
       "pyme": false,
-      "departamenos": [
+      "departamentos": [
         {
           "nombre": "Ventas",
           "subdepartamentos": [

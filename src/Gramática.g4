@@ -17,7 +17,7 @@ t_ingresos_anuales : INGRESOS_ANUALES FLOAT;
 t_nombre_empresa : NOMBRE_EMPRESA STRING;
 t_fundacion : FUNDACION INT;
 t_pyme : PYME (TRUE | FALSE);
-t_link : LINK STRING;  // Usar la regla URL para validar la URL
+t_link : LINK URL;  // Usar la regla URL para validar la URL
 t_direccion : DIRECCION t_tipo_direccion;
 t_tipo_direccion : NULL | ABRO_LLAVE t_calle COMA t_ciudad COMA t_pais CIERRO_LLAVE;
 t_calle : CALLE STRING;
@@ -56,16 +56,16 @@ VERSION: '"versión":' | '"version":';
 FIRMA_DIGITAL: '"firma_digital":';
 INGRESOS_ANUALES: '"ingresos_anuales":';
 NOMBRE_EMPRESA: '"nombre_empresa":';
-FUNDACION: '"fundación":';
+FUNDACION: '"fundación":' | '"fundacion":';
 PYME: '"pyme":';
 LINK: '"link":';
-DIRECCION: '"dirección":';
+DIRECCION: '"dirección":' | '"direccion":';
 EDAD: '"edad":';
 CARGO: '"cargo":';
 TIPO_CARGO: '"Product Analyst"' | '"Project Manager"' | '"UX designer"' | '"Marketing"' | '"Developer"' | '"Devops"' | '"DB admin"' ;
 SALARIO: '"salario":';
 ACTIVO: '"activo":';
-FECHA_CONTRATACION: '"fecha_contratación":';
+FECHA_CONTRATACION: '"fecha_contratación":' | '"fecha_contratacion":';
 FECHA_INICIO: '"fecha_inicio":';
 ESTADO: '"estado":';
 TIPO_ESTADO: '"To do"' | '"In progress"' | '"Canceled"' | '"Done"' | '"On hold"' ;
@@ -86,23 +86,19 @@ CIERRO_CORCHETE: ']';
 COMA: ',';
 NULL: 'null';
 
-//TIPOS
+// TIPOS
 TRUE: 'true';
 FALSE: 'false';
 DIGIT: [0-9];
-MES1: [0-1];
-DIA1: [0-3];
-ANO1: [1-2];
-ANO2: [09];
 INT: DIGIT+;
-FLOAT: DIGIT+ '.' DIGIT+;
-DATE: '"' ANO1 ANO2 DIGIT DIGIT '-' MES1 DIGIT '-' DIA1 DIGIT '"';
+FLOAT: DIGIT+ '.' DIGIT DIGIT;
+DATE: '"' ('19' DIGIT DIGIT | '20' DIGIT DIGIT) '-' ('0'[1-9] | '1'[0-2]) '-' ('0'[1-9] | [12][0-9] | '3'[01]) '"';
 STRING: '"' (~["\\] | ESC)* '"';
-URL_STRING: [a-zA-Z0-9\-_.#~]+;
+URL_STRING: [a-zA-Z0-9-.~#]+; // Permitimos más caracteres especiales aquí
 PROTOCOLO: 'https' | 'http';
-DOMINIO: URL_STRING ('.' URL_STRING)*;
+DOMINIO: URL_STRING ('.' URL_STRING)+;
 PUERTO: ':' INT;
-RUTA: '/' URL_STRING;
+RUTA: '/' URL_STRING ( '/' URL_STRING )*;
 URL: '"' PROTOCOLO '://' DOMINIO ( PUERTO )? ( RUTA )? '"';
 WS: [ \t\r\n]+ -> skip;
 fragment ESC: '\\' [\\/bfnrt];
