@@ -17,9 +17,9 @@ t_ingresos_anuales : INGRESOS_ANUALES FLOAT;
 t_nombre_empresa : NOMBRE_EMPRESA STRING;
 t_fundacion : FUNDACION INT;
 t_pyme : PYME (TRUE | FALSE);
-t_link : LINK URL;
+t_link : LINK STRING;  // Usar la regla URL para validar la URL
 t_direccion : DIRECCION t_tipo_direccion;
-t_tipo_direccion : NULL | ABRO_LLAVE CIERRO_LLAVE | ABRO_CORCHETE CIERRO_CORCHETE | ABRO_LLAVE t_calle COMA t_ciudad COMA t_pais CIERRO_LLAVE;
+t_tipo_direccion : NULL | ABRO_LLAVE t_calle COMA t_ciudad COMA t_pais CIERRO_LLAVE;
 t_calle : CALLE STRING;
 t_ciudad : CIUDAD STRING;
 t_pais : PAIS STRING;
@@ -52,7 +52,7 @@ t_fecha_fin : FECHA_FIN (DATE | NULL);
 
 // Reglas léxicas
 EMPRESAS: '"empresas":';
-VERSION:  '"versión":';
+VERSION: '"versión":' | '"version":';
 FIRMA_DIGITAL: '"firma_digital":';
 INGRESOS_ANUALES: '"ingresos_anuales":';
 NOMBRE_EMPRESA: '"nombre_empresa":';
@@ -72,7 +72,7 @@ TIPO_ESTADO: '"To do"' | '"In progress"' | '"Canceled"' | '"Done"' | '"On hold"'
 FECHA_FIN: '"fecha_fin":';
 CALLE: '"calle":';
 CIUDAD: '"ciudad":';
-PAIS: '"pais":';
+PAIS: '"país":' | '"pais":';
 DEPARTAMENTOS: '"departamentos":';
 EMPLEADO_LISTA: '"empleados":';
 SUBDEPARTAMENTOS_LISTA: '"subdepartamentos":';
@@ -90,16 +90,20 @@ NULL: 'null';
 TRUE: 'true';
 FALSE: 'false';
 DIGIT: [0-9];
+MES1: [0-1];
+DIA1: [0-3];
+ANO1: [1-2];
+ANO2: [09];
 INT: DIGIT+;
 FLOAT: DIGIT+ '.' DIGIT+;
-DATE: '"' DIGIT DIGIT DIGIT DIGIT '-' DIGIT DIGIT '-' DIGIT DIGIT '"';
+DATE: '"' ANO1 ANO2 DIGIT DIGIT '-' MES1 DIGIT '-' DIA1 DIGIT '"';
 STRING: '"' (~["\\] | ESC)* '"';
-URL_STRING: [a-zA-Z0-9\-_.#]+;
+URL_STRING: [a-zA-Z0-9\-_.#~]+;
 PROTOCOLO: 'https' | 'http';
-DOMINIO: URL_STRING;
-PUERTO: INT;
-RUTA: URL_STRING;
-URL: PROTOCOLO '://' DOMINIO (':' PUERTO)? ('/' RUTA)*;
+DOMINIO: URL_STRING ('.' URL_STRING)*;
+PUERTO: ':' INT;
+RUTA: '/' URL_STRING;
+URL: '"' PROTOCOLO '://' DOMINIO ( PUERTO )? ( RUTA )? '"';
 WS: [ \t\r\n]+ -> skip;
 fragment ESC: '\\' [\\/bfnrt];
 
