@@ -1,4 +1,4 @@
-import sys
+
 import os
 from antlr4 import *
 from GramáticaLexer import GramáticaLexer
@@ -187,39 +187,41 @@ class JSONToHTMLListener(GramáticaListener):
     # Añade más métodos para cada elemento de la gramática que quieras convertir a HTML
 
 def main():
-    file_name = input("Ingrese la ruta absoluta del archivo que desea analizar: ")
-    try:
-        with open(file_name, 'r', encoding='utf-8') as file:
-            input_stream = InputStream(file.read())
-            lexer = GramáticaLexer(input_stream)
-            stream = CommonTokenStream(lexer)
-            parser = GramáticaParser(stream)
-            error_listener = ErrorListener()
-            parser.addErrorListener(error_listener)
-            tree = parser.json()
+    while True:
+        file_name = input("Ingrese la ruta absoluta del archivo que desea analizar: ")
+        try:
+            with open(file_name, 'r', encoding='utf-8') as file:
+                input_stream = InputStream(file.read())
+                lexer = GramáticaLexer(input_stream)
+                stream = CommonTokenStream(lexer)
+                parser = GramáticaParser(stream)
+                error_listener = ErrorListener()
+                parser.addErrorListener(error_listener)
+                tree = parser.json()
 
-            # Obtener el nombre del archivo sin la extensión y agregar la extensión .html
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            output_file_name = os.path.join(script_dir, f"{os.path.basename(file_name).rsplit('.', 1)[0]}.html")
+                # Obtener el nombre del archivo sin la extensión y agregar la extensión .html
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                output_file_name = os.path.join(script_dir, f"{os.path.basename(file_name).rsplit('.', 1)[0]}.html")
 
-            with open(output_file_name, "w", encoding='utf-8') as f:
+                with open(output_file_name, "w", encoding='utf-8') as f:
+                    if error_listener.error:
+                        f.write(f"<html><body><h3>Se encontraron errores en el archivo de prueba</h3></body></html>")
+                    else:
+                        listener = JSONToHTMLListener()
+                        walker = ParseTreeWalker()
+                        walker.walk(listener, tree)
+                        f.write(listener.html)
+
                 if error_listener.error:
-                    f.write(f"<html><body><h3>Se encontraron errores en el archivo de prueba</h3></body></html>")
+                    print(f"Errores encontrados: {error_listener.error}")
                 else:
-                    listener = JSONToHTMLListener()
-                    walker = ParseTreeWalker()
-                    walker.walk(listener, tree)
-                    f.write(listener.html)
+                    print(f"Parsing y traducción a HTML completado. Entrar a {output_file_name}")
 
-            if error_listener.error:
-                print(f"Errores encontrados: {error_listener.error}")
-            else:
-                print(f"Parsing y traducción a HTML completado. Entrar a {output_file_name}")
-
-    except FileNotFoundError:
-        print(f"Archivo '{file_name}' no encontrado.")
-    except Exception as e:
-        print(f"Ocurrió un error, intente de nuevo: {e}")
+        except FileNotFoundError:
+            print(f"Archivo '{file_name}' no encontrado.")
+        eleccion = input("¿Desea cargar otro archivo? (si/no): ").strip().lower()
+        if eleccion != 'si':
+            break
 
     input("Presiona Enter para salir...")
 

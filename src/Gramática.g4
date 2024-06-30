@@ -93,13 +93,13 @@ DIGIT: [0-9];
 INT: DIGIT+;
 FLOAT: DIGIT+ '.' DIGIT DIGIT;
 DATE: '"' ('19' DIGIT DIGIT | '20' DIGIT DIGIT) '-' ('0'[1-9] | '1'[0-2]) '-' ('0'[1-9] | [12][0-9] | '3'[01]) '"';
-STRING: '"' (~["\\] | ESC)* '"';
-URL_STRING: [a-zA-Z0-9-.~#]+; // Permitimos más caracteres especiales aquí
+URL_STRING: [a-zA-Z0-9-.~#]+;
 PROTOCOLO: 'https' | 'http';
 DOMINIO: URL_STRING ('.' URL_STRING)+;
 PUERTO: ':' INT;
 RUTA: '/' URL_STRING ( '/' URL_STRING )*;
 URL: '"' PROTOCOLO '://' DOMINIO ( PUERTO )? ( RUTA )? '"';
+STRING: '"' (~["\\] | ESC)* '"';
 WS: [ \t\r\n]+ -> skip;
 fragment ESC: '\\' [\\/bfnrt];
 
