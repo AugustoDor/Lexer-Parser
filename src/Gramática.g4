@@ -39,7 +39,7 @@ t_empleado : ABRO_LLAVE t_contenidoempleado CIERRO_LLAVE;
 t_contenidoempleado :  t_nombre COMA (t_edad? COMA )? t_cargo COMA t_salario COMA t_activo COMA t_fecha_contratacion ( COMA t_proyectos)?;
 t_edad : EDAD INT;
 t_cargo : CARGO TIPO_CARGO;
-t_salario : SALARIO FLOAT;
+t_salario : SALARIO (FLOAT | INT);
 t_activo : ACTIVO (TRUE | FALSE);
 t_fecha_contratacion : FECHA_CONTRATACION DATE;
 t_proyectos : PROYECTOS_LISTA (ABRO_CORCHETE t_listaproyectos CIERRO_CORCHETE | ABRO_LLAVE CIERRO_LLAVE | ABRO_CORCHETE CIERRO_CORCHETE | NULL);
