@@ -1,5 +1,9 @@
 // Definición de la gramática para JSON específico
-grammar Gramática;
+grammar Gramatica;
+
+options {
+  language = Python3;
+}
 
 // Regla de inicio
 json : t_json | WS;
@@ -89,8 +93,8 @@ NULL: 'null';
 // TIPOS
 TRUE: 'true';
 FALSE: 'false';
+INT: [0-9]+;
 DIGIT: [0-9];
-INT: DIGIT+;
 FLOAT: DIGIT+ '.' DIGIT DIGIT;
 DATE: '"' ('19' DIGIT DIGIT | '20' DIGIT DIGIT) '-' ('0'[1-9] | '1'[0-2]) '-' ('0'[1-9] | [12][0-9] | '3'[01]) '"';
 URL_STRING: [a-zA-Z0-9-.~#]+;

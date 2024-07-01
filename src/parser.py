@@ -1,12 +1,11 @@
-
 import os
 from antlr4 import *
-from GramáticaLexer import GramáticaLexer
-from GramáticaParser import GramáticaParser
-from GramáticaListener import GramáticaListener
+from GramaticaLexer import GramaticaLexer
+from GramaticaParser import GramaticaParser
+from GramaticaListener import GramaticaListener
 from antlr4.error.ErrorListener import ErrorListener as ParserErrorListener
 
-class CustomListener(GramáticaListener):
+class CustomListener(GramaticaListener):
     def enterT_json(self, ctx):
         print("Entrando al JSON")
 
@@ -23,7 +22,7 @@ class ErrorListener(ParserErrorListener):
         self.error = f"Error en Parser: {msg} en la linea {line}, y columna {column}"
         print(self.error)
 
-class JSONToHTMLListener(GramáticaListener):
+class JSONToHTMLListener(GramaticaListener):
     def __init__(self):
         self.html = ""
 
@@ -73,9 +72,9 @@ class JSONToHTMLListener(GramáticaListener):
 
     def enterT_direccion(self, ctx):
         self.html += "<p>Dirección: <ul>"
-        self.html += f"<li>Calle: {ctx.getText().strip('\"')}</li>"
-        self.html += f"<li>Ciudad: {ctx.getText().strip('\"')}</li>"
-        self.html += f"<li>País: {ctx.getText().strip('\"')}</li>"
+        self.html += f"<li>Calle: {ctx.getText()}</li>"
+        self.html += f"<li>Ciudad: {ctx.getText()}</li>"
+        self.html += f"<li>País: {ctx.getText()}</li>"
         self.html += "</ul></p>"
 
     def exitT_direccion(self, ctx):
@@ -192,9 +191,9 @@ def main():
         try:
             with open(file_name, 'r', encoding='utf-8') as file:
                 input_stream = InputStream(file.read())
-                lexer = GramáticaLexer(input_stream)
+                lexer = GramaticaLexer(input_stream)
                 stream = CommonTokenStream(lexer)
-                parser = GramáticaParser(stream)
+                parser = GramaticaParser(stream)
                 error_listener = ErrorListener()
                 parser.addErrorListener(error_listener)
                 tree = parser.json()
