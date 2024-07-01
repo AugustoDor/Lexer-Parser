@@ -28,7 +28,7 @@ t_listadepartamentos : t_departamento ( COMA t_listadepartamentos)?;
 t_departamento : ABRO_LLAVE t_contenidodepartamento CIERRO_LLAVE;
 t_contenidodepartamento : t_nombre COMA (t_jefe COMA )? t_subdepartamentos;
 t_nombre : NOMBRE STRING;
-t_jefe : JEFE STRING;
+t_jefe : JEFE (STRING | NULL);
 t_subdepartamentos : SUBDEPARTAMENTOS_LISTA ABRO_CORCHETE t_listasubdepartamentos CIERRO_CORCHETE;
 t_listasubdepartamentos : t_subdepartamento ( COMA t_listasubdepartamentos)?;
 t_subdepartamento : ABRO_LLAVE t_contenidosubdepartamentos CIERRO_LLAVE;
@@ -47,7 +47,7 @@ t_listaproyectos : t_proyecto ( COMA t_listaproyectos)?;
 t_proyecto : ABRO_LLAVE t_contenidoproyecto CIERRO_LLAVE;
 t_contenidoproyecto : t_nombre COMA (t_estado COMA )? t_fecha_inicio ( COMA t_fecha_fin)?;
 t_fecha_inicio : FECHA_INICIO DATE;
-t_estado : ESTADO TIPO_ESTADO;
+t_estado : ESTADO (TIPO_ESTADO | NULL);
 t_fecha_fin : FECHA_FIN (DATE | NULL);
 
 // Reglas léxicas
@@ -89,8 +89,8 @@ NULL: 'null';
 // TIPOS
 TRUE: 'true';
 FALSE: 'false';
+INT: [0-9]+;
 DIGIT: [0-9];
-INT: DIGIT+;
 FLOAT: DIGIT+ '.' DIGIT DIGIT;
 DATE: '"' ('19' DIGIT DIGIT | '20' DIGIT DIGIT) '-' ('0'[1-9] | '1'[0-2]) '-' ('0'[1-9] | [12][0-9] | '3'[01]) '"';
 URL_STRING: [a-zA-Z0-9-.~#]+;

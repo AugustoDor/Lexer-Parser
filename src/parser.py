@@ -39,8 +39,17 @@ class JSONToHTMLListener(GramáticaListener):
     def exitT_empresa(self, ctx):
         self.html += "</div>"
 
+    def enterT_version(self, ctx):
+        self.html += f"<h4>Versión:{ctx.STRING().getText().strip('"')}</h4>"
+    def exitT_version(self, ctx):
+        pass
+
+    def enterT_firma_digital(self, ctx):
+        self.html += f"<h4>Firma digital:{ctx.STRING().getText().strip('"')}</h4>"
+    def exitT_firma_digital(self, ctx):
+        pass
     def enterT_nombre_empresa(self, ctx):
-        self.html += f"<h1>{ctx.STRING().getText()}</h1>"
+        self.html += f"<h1>{ctx.STRING().getText().strip('"')}</h1>"
 
     def exitT_nombre_empresa(self, ctx):
         pass
@@ -52,7 +61,7 @@ class JSONToHTMLListener(GramáticaListener):
         pass
 
     def enterT_ingresos_anuales(self, ctx):
-        self.html += f"<p>Ingresos Anuales: {ctx.FLOAT().getText()}</p>"
+        self.html += f"<p>Ingresos Anuales: {ctx.FLOAT().getText().strip('"')}</p>"
 
     def exitT_ingresos_anuales(self, ctx):
         pass
@@ -73,9 +82,12 @@ class JSONToHTMLListener(GramáticaListener):
 
     def enterT_direccion(self, ctx):
         self.html += "<p>Dirección: <ul>"
-        self.html += f"<li>Calle: {ctx.getText().strip('\"')}</li>"
-        self.html += f"<li>Ciudad: {ctx.getText().strip('\"')}</li>"
-        self.html += f"<li>País: {ctx.getText().strip('\"')}</li>"
+        calle = ctx.t_tipo_direccion().t_calle().STRING().getText().strip('"')
+        ciudad = ctx.t_tipo_direccion().t_ciudad().STRING().getText().strip('"')
+        pais = ctx.t_tipo_direccion().t_pais().STRING().getText().strip('"')
+        self.html += f"<li>Calle: {calle}</li>"
+        self.html += f"<li>Ciudad: {ciudad}</li>"
+        self.html += f"<li>País: {pais}</li>"
         self.html += "</ul></p>"
 
     def exitT_direccion(self, ctx):
@@ -94,13 +106,16 @@ class JSONToHTMLListener(GramáticaListener):
         self.html += "</div>"
 
     def enterT_nombre(self, ctx):
-        self.html += f"<h2>{ctx.STRING().getText()}</h2>"
+        self.html += f"<h2>{ctx.STRING().getText().strip('"')}</h2>"
 
     def exitT_nombre(self, ctx):
         pass
 
     def enterT_jefe(self, ctx):
-        self.html += f"<p>Jefe: {ctx.STRING().getText()}</p>"
+        if ctx.STRING():
+            self.html += f"<p>Jefe: {ctx.STRING().getText().strip('"')}</p>"
+        elif ctx.NULL():
+            self.html += "<p>Jefe: null</p>"
 
     def exitT_jefe(self, ctx):
         pass
@@ -130,13 +145,16 @@ class JSONToHTMLListener(GramáticaListener):
         pass
 
     def enterT_cargo(self, ctx):
-        self.html += f"<p>Cargo: {ctx.TIPO_CARGO().getText()}</p>"
+        self.html += f"<p>Cargo: {ctx.TIPO_CARGO().getText().strip('"')}</p>"
 
     def exitT_cargo(self, ctx):
         pass
 
     def enterT_salario(self, ctx):
-        self.html += f"<p>Salario: {ctx.FLOAT().getText()}</p>"
+        if ctx.FLOAT():
+            self.html += f"<p>Salario: {ctx.FLOAT().getText()}</p>"
+        else:
+            self.html += f"<p>Salario: {ctx.INT().getText()}</p>"
 
     def exitT_salario(self, ctx):
         pass
@@ -149,7 +167,7 @@ class JSONToHTMLListener(GramáticaListener):
         pass
 
     def enterT_fecha_contratacion(self, ctx):
-        self.html += f"<p>Fecha de Contratación: {ctx.DATE().getText()}</p>"
+        self.html += f"<p>Fecha de Contratación: {ctx.DATE().getText().strip('"')}</p>"
 
     def exitT_fecha_contratacion(self, ctx):
         pass
@@ -161,30 +179,30 @@ class JSONToHTMLListener(GramáticaListener):
         pass
 
     def enterT_proyecto(self, ctx):
-        self.html += "<table border='1'><tr><th>Fecha de Inicio</th><th>Estado</th><th>Fecha de Fin</th></tr>"
+        self.html += "<table border='1'><tr><th>Estado</th><th>Fecha Inicio</th><th>Fecha de Fin</th></tr>"
 
     def exitT_proyecto(self, ctx):
         self.html += "</table>"
 
+    def enterT_estado(self, ctx):
+        if ctx.TIPO_ESTADO():
+            self.html += f"<td>{ctx.TIPO_ESTADO().getText().strip('"')}</td>"
+        else:
+            self.html += f"<td>{ctx.NULL().getText().strip('"')}</td>"
+
+    def exitT_estado(self, ctx):
+        pass
     def enterT_fecha_inicio(self, ctx):
-        self.html += f"<tr><td>{ctx.DATE().getText()}</td>"
+        self.html += f"<td>{ctx.DATE().getText().strip('"')}</td>"
 
     def exitT_fecha_inicio(self, ctx):
         pass
 
-    def enterT_estado(self, ctx):
-        self.html += f"<td>{ctx.TIPO_ESTADO().getText()}</td>"
-
-    def exitT_estado(self, ctx):
-        pass
-
     def enterT_fecha_fin(self, ctx):
-        self.html += f"<td>{ctx.children[1].getText()}</td></tr>"
+        self.html += f"<td>{ctx.DATE().getText().strip('"')}</td>"
 
     def exitT_fecha_fin(self, ctx):
         pass
-
-    # Añade más métodos para cada elemento de la gramática que quieras convertir a HTML
 
 def main():
     while True:
@@ -199,7 +217,6 @@ def main():
                 parser.addErrorListener(error_listener)
                 tree = parser.json()
 
-                # Obtener el nombre del archivo sin la extensión y agregar la extensión .html
                 script_dir = os.path.dirname(os.path.abspath(__file__))
                 output_file_name = os.path.join(script_dir, f"{os.path.basename(file_name).rsplit('.', 1)[0]}.html")
 
@@ -219,6 +236,7 @@ def main():
 
         except FileNotFoundError:
             print(f"Archivo '{file_name}' no encontrado.")
+
         eleccion = input("¿Desea cargar otro archivo? (si/no): ").strip().lower()
         if eleccion != 'si':
             break
