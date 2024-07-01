@@ -184,6 +184,12 @@ class JSONToHTMLListener(GramáticaListener):
     def exitT_proyecto(self, ctx):
         self.html += "</table>"
 
+    def enterT_fecha_inicio(self, ctx):
+        self.html += f"<td>{ctx.DATE().getText().strip('"')}</td>"
+
+    def exitT_fecha_inicio(self, ctx):
+        pass
+
     def enterT_estado(self, ctx):
         if ctx.TIPO_ESTADO():
             self.html += f"<td>{ctx.TIPO_ESTADO().getText().strip('"')}</td>"
@@ -191,11 +197,6 @@ class JSONToHTMLListener(GramáticaListener):
             self.html += f"<td>{ctx.NULL().getText().strip('"')}</td>"
 
     def exitT_estado(self, ctx):
-        pass
-    def enterT_fecha_inicio(self, ctx):
-        self.html += f"<td>{ctx.DATE().getText().strip('"')}</td>"
-
-    def exitT_fecha_inicio(self, ctx):
         pass
 
     def enterT_fecha_fin(self, ctx):
@@ -206,9 +207,45 @@ class JSONToHTMLListener(GramáticaListener):
 
 def main():
     while True:
-        file_name = input("Ingrese la ruta absoluta del archivo que desea analizar: ")
-        try:
-            with open(file_name, 'r', encoding='utf-8') as file:
+        opcion = input("Elija una opcion: 1.Cargar manual, 2.Cargar archivo ")
+        if opcion == '2':
+            file_name = input("Ingrese la ruta absoluta del archivo que desea analizar: ")
+            try:
+                with open(file_name, 'r', encoding='utf-8') as file:
+                    input_stream = InputStream(file.read())
+                    lexer = GramáticaLexer(input_stream)
+                    stream = CommonTokenStream(lexer)
+                    parser = GramáticaParser(stream)
+                    error_listener = ErrorListener()
+                    parser.addErrorListener(error_listener)
+                    tree = parser.json()
+
+                    script_dir = os.path.dirname(os.path.abspath(__file__))
+                    output_file_name = os.path.join(script_dir, f"{os.path.basename(file_name).rsplit('.', 1)[0]}.html")
+
+                    with open(output_file_name, "w", encoding='utf-8') as f:
+                        if error_listener.error:
+                            f.write(f"<html><body><h3>Se encontraron errores en el archivo de prueba</h3></body></html>")
+                        else:
+                            listener = JSONToHTMLListener()
+                            walker = ParseTreeWalker()
+                            walker.walk(listener, tree)
+                            f.write(listener.html)
+
+                    if error_listener.error:
+                        print(f"Errores encontrados: {error_listener.error}")
+                    else:
+                        print(f"Parsing y traducción a HTML completado. Entrar a {output_file_name}")
+
+            except FileNotFoundError:
+                print(f"Archivo '{file_name}' no encontrado.")
+
+            eleccion = input("¿Desea cargar otro archivo? (si/no): ").strip().lower()
+            if eleccion != 'si':
+                break
+        else:
+            textoJSON = input("Ingrese su texto: ")
+            with open(textoJSON, 'r', encoding='utf-8') as file:
                 input_stream = InputStream(file.read())
                 lexer = GramáticaLexer(input_stream)
                 stream = CommonTokenStream(lexer)
@@ -218,11 +255,13 @@ def main():
                 tree = parser.json()
 
                 script_dir = os.path.dirname(os.path.abspath(__file__))
+                file_name = input("Ingrese el nombre deseado para su archivo")
                 output_file_name = os.path.join(script_dir, f"{os.path.basename(file_name).rsplit('.', 1)[0]}.html")
 
                 with open(output_file_name, "w", encoding='utf-8') as f:
                     if error_listener.error:
-                        f.write(f"<html><body><h3>Se encontraron errores en el archivo de prueba</h3></body></html>")
+                        f.write(
+                            f"<html><body><h3>Se encontraron errores en el archivo de prueba</h3></body></html>")
                     else:
                         listener = JSONToHTMLListener()
                         walker = ParseTreeWalker()
@@ -234,10 +273,7 @@ def main():
                 else:
                     print(f"Parsing y traducción a HTML completado. Entrar a {output_file_name}")
 
-        except FileNotFoundError:
-            print(f"Archivo '{file_name}' no encontrado.")
-
-        eleccion = input("¿Desea cargar otro archivo? (si/no): ").strip().lower()
+        eleccion = input("¿Desea cargar otro JSON? (si/no): ").strip().lower()
         if eleccion != 'si':
             break
 
